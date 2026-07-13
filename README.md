@@ -6,7 +6,7 @@
 
 **Turn a product requirements doc into working backend and UI code with an eight-agent swarm.** Drop in `prd/current.md`, run `/ship-prd`, and specialized subagents decompose, design, implement, and QA — including browser-driven visual checks for every UI story.
 
-Works as a plugin for **Cursor** and **Claude Code**. Sibling of the backend-only [`agent-swarm`](https://github.com/mandar-zope/orchestrator) plugin, extended with `ui` / `fullstack` tracks, UX design, and visual QA.
+Works as a plugin for **Cursor** and **Claude Code**. Sibling of the backend-only [`agent-swarm`](https://github.com/mandarzope/fullstack-swarm) plugin, extended with `ui` / `fullstack` tracks, UX design, and visual QA.
 
 <p align="center">
   <img src="assets/pipeline.svg" alt="Pipeline: PRD to stories to design to build to QA to DONE" width="920" />
