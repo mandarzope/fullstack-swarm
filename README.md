@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.png" alt="fullstack-swarm logo" width="120" height="120" />
+  <img src="https://fullstack-swarm.com/assets/logo.png" alt="fullstack-swarm logo" width="120" height="120" />
 </p>
 
 # fullstack-swarm
@@ -9,11 +9,7 @@
 Works as a plugin for **Cursor** and **Claude Code**. Sibling of the backend-only [`agent-swarm`](https://github.com/mandarzope/fullstack-swarm) plugin, extended with `ui` / `fullstack` tracks, UX design, and visual QA.
 
 <p align="center">
-  <img src="assets/readme-hero.jpg" alt="Eight specialized agents orchestrated from PRD through design, build, QA, and DONE" width="920" />
-</p>
-
-<p align="center">
-  <img src="assets/pipeline.svg" alt="Pipeline: PRD to stories to design to build to QA to DONE" width="920" />
+  <img src="https://fullstack-swarm.com/assets/readme-hero.jpg" alt="Eight specialized agents orchestrated from PRD through design, build, QA, and DONE" width="920" />
 </p>
 
 ## Why it exists
