@@ -1,0 +1,39 @@
+{
+  "skill_name": "swarm-init",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Initialize the swarm in an empty temp project directory. List every directory and key file you would create (do not write outside the sandbox if instructed; prefer reporting the plan with exact paths).",
+      "expected_output": "Full scaffold plan: .claude/agents/, .claude/commands/, .cursor/rules/, prd/, stories/, design/{hld/adrs,lld,ux}/, src/, web/, tests/, plus CLAUDE.md, eight agent defs, three slash commands, empty _queue.json, orchestrator.mdc.",
+      "files": [],
+      "expectations": [
+        "Plan includes directories .claude/agents/, .claude/commands/, .cursor/rules/, prd/, stories/, design/hld/adrs/, design/lld/, design/ux/, src/, web/, tests/",
+        "Plan includes writing CLAUDE.md with the fullstack-swarm orchestrator constitution",
+        "Plan includes all eight subagent definitions (project-manager through visual-qa)",
+        "Plan includes slash commands ship-prd, status, and next",
+        "Plan seeds stories/_queue.json and writes .cursor/rules/orchestrator.mdc"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Re-run /swarm-init on a project where CLAUDE.md and stories/_queue.json already exist. Do not pass --force. What do you do?",
+      "expected_output": "Skip existing files, note each skip, still create any missing scaffold pieces. No overwrite of CLAUDE.md or _queue.json.",
+      "files": [],
+      "expectations": [
+        "Agent skips CLAUDE.md because it already exists and --force was not passed",
+        "Agent skips stories/_queue.json for the same reason",
+        "Agent notes skipped files rather than silently overwriting"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Run /swarm-init --force on a project that already has CLAUDE.md. What changes?",
+      "expected_output": "With --force, existing files are overwritten (including CLAUDE.md) rather than skipped.",
+      "files": [],
+      "expectations": [
+        "Agent treats --force as permission to overwrite existing files",
+        "CLAUDE.md is rewritten (not skipped)"
+      ]
+    }
+  ]
+}

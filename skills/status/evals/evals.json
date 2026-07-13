@@ -1,0 +1,38 @@
+{
+  "skill_name": "status",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Run /status. Use the queue fixture at evals/files/queue-mixed.json as stories/_queue.json.",
+      "expected_output": "A read-only pipeline status report: story table with track/status/deps, per-status counts, and the exact next dispatch (/next would send STORY-002 to frontend-developer because READY_FOR_BUILD + track=ui and deps are DONE). No Task/subagent dispatch.",
+      "files": ["evals/files/queue-mixed.json"],
+      "expectations": [
+        "Output includes a table or list of every story with slug, track, and status",
+        "Output includes per-status counts",
+        "Output identifies the next dispatch as frontend-developer for STORY-002 (READY_FOR_BUILD, track=ui)",
+        "Agent does not dispatch any subagent (read-only)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "What's the pipeline state? Use evals/files/queue-blocked.json as stories/_queue.json.",
+      "expected_output": "BLOCKED story STORY-010 called out at the top; next dispatch would stop for human because of BLOCKED; STORY-011 is not eligible while its dep is blocked/not DONE.",
+      "files": ["evals/files/queue-blocked.json"],
+      "expectations": [
+        "BLOCKED story STORY-010 is called out at the top of the report",
+        "Output states that /next would stop for the human due to BLOCKED (no dispatch)",
+        "Agent does not dispatch any subagent"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Where are we? Use evals/files/queue-all-done.json as stories/_queue.json.",
+      "expected_output": "Explicit statement that every story is DONE; no next dispatch.",
+      "files": ["evals/files/queue-all-done.json"],
+      "expectations": [
+        "Output explicitly says every story is DONE",
+        "Output does not propose dispatching a subagent"
+      ]
+    }
+  ]
+}

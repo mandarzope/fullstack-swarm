@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "stories": [
+    {
+      "slug": "STORY-001",
+      "title": "Create users API",
+      "track": "backend",
+      "status": "DONE",
+      "deps": [],
+      "owner_subagent": "qa-engineer",
+      "artifacts": {},
+      "history": []
+    },
+    {
+      "slug": "STORY-020",
+      "title": "Session middleware",
+      "track": "backend",
+      "status": "READY_FOR_BUILD",
+      "deps": [],
+      "owner_subagent": null,
+      "artifacts": {
+        "lld": "design/lld/STORY-020.md"
+      },
+      "history": []
+    },
+    {
+      "slug": "STORY-021",
+      "title": "Profile page",
+      "track": "ui",
+      "status": "READY_FOR_BUILD",
+      "deps": ["STORY-001"],
+      "owner_subagent": null,
+      "artifacts": {
+        "lld": "design/lld/STORY-021.md",
+        "ux": "design/ux/STORY-021.md"
+      },
+      "history": []
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "skill_name": "ship-prd",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Run /ship-prd. Pretend prd/current.md is missing and stories/_queue.json is empty. Decide what to do.",
+      "expected_output": "Tell the user the PRD is missing and stop. Do not dispatch project-manager.",
+      "files": ["evals/files/queue-empty.json"],
+      "expectations": [
+        "Agent reports that prd/current.md is missing",
+        "Agent stops without dispatching project-manager or any other subagent"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Start the pipeline from the PRD. Use evals/files/prd-sample.md as prd/current.md and evals/files/queue-nonempty.json as stories/_queue.json.",
+      "expected_output": "Because the queue is non-empty, ask whether to overwrite (start fresh) or merge. Do not proceed without an answer.",
+      "files": [
+        "evals/files/prd-sample.md",
+        "evals/files/queue-nonempty.json"
+      ],
+      "expectations": [
+        "Agent detects the non-empty queue",
+        "Agent asks the human to choose overwrite vs merge",
+        "Agent does not dispatch project-manager before getting an answer"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Kick off the swarm. Use evals/files/prd-sample.md as prd/current.md and evals/files/queue-empty.json as stories/_queue.json. Describe the first dispatch and what happens after project-manager returns (do not call Task).",
+      "expected_output": "Dispatch project-manager to decompose the PRD with track tags, then immediately continue the same autonomous loop as /next until BLOCKED, all DONE, or stuck — without waiting for a separate /next.",
+      "files": [
+        "evals/files/prd-sample.md",
+        "evals/files/queue-empty.json"
+      ],
+      "expectations": [
+        "First action is dispatching project-manager with a prompt referencing prd/current.md and stories/_schema.json",
+        "Agent states it will parse the <status> block and update stories/_queue.json",
+        "Agent states it will continue the autonomous /next loop after project-manager returns (not wait for another /next)"
+      ]
+    }
+  ]
+}

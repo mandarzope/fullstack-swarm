@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "stories": [
+    {
+      "slug": "STORY-030",
+      "title": "Orders API",
+      "track": "backend",
+      "status": "READY_FOR_ARCH",
+      "deps": [],
+      "owner_subagent": "solution-architect",
+      "artifacts": {},
+      "history": []
+    },
+    {
+      "slug": "STORY-031",
+      "title": "Orders UI",
+      "track": "ui",
+      "status": "READY_FOR_BUILD",
+      "deps": ["STORY-030"],
+      "owner_subagent": "frontend-developer",
+      "artifacts": {
+        "lld": "design/lld/STORY-031.md",
+        "ux": "design/ux/STORY-031.md"
+      },
+      "history": []
+    }
+  ]
+}

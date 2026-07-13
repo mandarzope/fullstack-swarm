@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "stories": [
+    {
+      "slug": "STORY-040",
+      "title": "Export CSV",
+      "track": "backend",
+      "status": "READY_FOR_BUILD",
+      "deps": [],
+      "owner_subagent": "developer",
+      "artifacts": {
+        "lld": "design/lld/STORY-040.md"
+      },
+      "history": []
+    },
+    {
+      "slug": "STORY-041",
+      "title": "Import CSV",
+      "track": "backend",
+      "status": "FAILING_QA",
+      "deps": [],
+      "owner_subagent": "developer",
+      "artifacts": {
+        "lld": "design/lld/STORY-041.md",
+        "qa": "tests/STORY-041-qa.md"
+      },
+      "history": []
+    }
+  ]
+}

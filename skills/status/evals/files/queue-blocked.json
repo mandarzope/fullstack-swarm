@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "stories": [
+    {
+      "slug": "STORY-010",
+      "title": "Billing webhook",
+      "track": "backend",
+      "status": "BLOCKED",
+      "deps": [],
+      "owner_subagent": "developer",
+      "artifacts": {},
+      "history": [
+        {
+          "ts": "2026-07-13T10:00:00Z",
+          "subagent": "developer",
+          "outcome": "blocked",
+          "notes": "Needs Stripe sandbox credentials"
+        }
+      ]
+    },
+    {
+      "slug": "STORY-011",
+      "title": "Invoice list UI",
+      "track": "ui",
+      "status": "READY_FOR_QA",
+      "deps": ["STORY-010"],
+      "owner_subagent": "qa-engineer",
+      "artifacts": {},
+      "history": []
+    }
+  ]
+}

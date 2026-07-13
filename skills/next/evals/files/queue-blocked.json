@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "stories": [
+    {
+      "slug": "STORY-010",
+      "title": "Billing webhook",
+      "track": "backend",
+      "status": "BLOCKED",
+      "deps": [],
+      "owner_subagent": "developer",
+      "artifacts": {},
+      "history": []
+    },
+    {
+      "slug": "STORY-011",
+      "title": "Invoice API",
+      "track": "backend",
+      "status": "READY_FOR_BUILD",
+      "deps": [],
+      "owner_subagent": "developer",
+      "artifacts": {
+        "lld": "design/lld/STORY-011.md"
+      },
+      "history": []
+    }
+  ]
+}

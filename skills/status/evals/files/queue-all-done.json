@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "stories": [
+    {
+      "slug": "STORY-001",
+      "title": "Health check endpoint",
+      "track": "backend",
+      "status": "DONE",
+      "deps": [],
+      "owner_subagent": "qa-engineer",
+      "artifacts": {},
+      "history": []
+    },
+    {
+      "slug": "STORY-002",
+      "title": "Status badge UI",
+      "track": "ui",
+      "status": "DONE",
+      "deps": ["STORY-001"],
+      "owner_subagent": "visual-qa",
+      "artifacts": {},
+      "history": []
+    }
+  ]
+}

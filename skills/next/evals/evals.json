@@ -1,0 +1,49 @@
+{
+  "skill_name": "next",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Run /next. Use evals/files/queue-blocked.json as stories/_queue.json. Do not actually invoke Task subagents — decide and report what you would do.",
+      "expected_output": "Hard stop: tell the human about BLOCKED STORY-010 and exit without dispatching STORY-011 even though it is READY_FOR_BUILD.",
+      "files": ["evals/files/queue-blocked.json"],
+      "expectations": [
+        "Agent identifies STORY-010 as BLOCKED and stops for the human",
+        "Agent does not dispatch STORY-011 or any other story",
+        "Output summarizes the queue state"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Advance the pipeline one decision step. Use evals/files/queue-track-routing.json as stories/_queue.json. Report the batch you would dispatch (subagent per story) without calling Task.",
+      "expected_output": "Both STORY-020 and STORY-021 are READY_FOR_BUILD with met deps. Track routing: STORY-020 → developer, STORY-021 → frontend-developer. They map to different subagent roles so they are not one parallel same-role batch, but both are eligible under READY_FOR_BUILD.",
+      "files": ["evals/files/queue-track-routing.json"],
+      "expectations": [
+        "STORY-020 is routed to developer (track=backend, READY_FOR_BUILD)",
+        "STORY-021 is routed to frontend-developer (track=ui, READY_FOR_BUILD)",
+        "Neither story is skipped for unmet deps"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Run /next decision for evals/files/queue-unmet-deps.json. Report which story dispatches and which is skipped.",
+      "expected_output": "STORY-031 has unmet dep STORY-030 (not DONE) so it must not dispatch. First matching rule with an eligible story is READY_FOR_ARCH → solution-architect for STORY-030.",
+      "files": ["evals/files/queue-unmet-deps.json"],
+      "expectations": [
+        "STORY-031 is not dispatched because deps are not all DONE",
+        "STORY-030 is selected for solution-architect (READY_FOR_ARCH)",
+        "Agent cites unmet deps as the reason STORY-031 is skipped"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "What would /next dispatch first for evals/files/queue-priority.json? Explain priority order.",
+      "expected_output": "FAILING_QA outranks READY_FOR_BUILD. Batch is STORY-041 → developer, with the QA report path included. STORY-040 waits.",
+      "files": ["evals/files/queue-priority.json"],
+      "expectations": [
+        "First batch is FAILING_QA story STORY-041, not READY_FOR_BUILD STORY-040",
+        "STORY-041 is routed to developer (track=backend)",
+        "Dispatch prompt would include the prior QA report path tests/STORY-041-qa.md"
+      ]
+    }
+  ]
+}
