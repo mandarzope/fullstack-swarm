@@ -1,0 +1,73 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Story Queue",
+  "type": "object",
+  "required": ["version", "stories"],
+  "properties": {
+    "version": { "const": 1 },
+    "stories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["slug", "title", "status", "track"],
+        "properties": {
+          "slug": { "type": "string", "pattern": "^STORY-\\d{3,}$" },
+          "title": { "type": "string" },
+          "track": { "enum": ["backend", "ui", "fullstack"] },
+          "status": {
+            "enum": [
+              "DRAFT",
+              "READY_FOR_ARCH",
+              "READY_FOR_LLD",
+              "READY_FOR_UX_DESIGN",
+              "READY_FOR_BUILD",
+              "READY_FOR_QA",
+              "READY_FOR_VISUAL_QA",
+              "FAILING_QA",
+              "FAILING_VISUAL_QA",
+              "BLOCKED",
+              "DONE"
+            ]
+          },
+          "deps": {
+            "type": "array",
+            "items": { "type": "string", "pattern": "^STORY-\\d{3,}$" }
+          },
+          "owner_subagent": {
+            "type": ["string", "null"],
+            "enum": [
+              null,
+              "project-manager",
+              "solution-architect",
+              "tech-lead",
+              "ux-designer",
+              "developer",
+              "frontend-developer",
+              "qa-engineer",
+              "visual-qa"
+            ]
+          },
+          "artifacts": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "history": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["ts", "subagent", "outcome"],
+              "properties": {
+                "ts": { "type": "string", "format": "date-time" },
+                "subagent": { "type": "string" },
+                "outcome": {
+                  "enum": ["success", "partial", "failed", "blocked"]
+                },
+                "notes": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
