@@ -1,102 +1,146 @@
+<p align="center">
+  <img src="assets/logo.png" alt="fullstack-swarm logo" width="180" height="180" />
+</p>
+
 # fullstack-swarm
 
-Claude Code **and** Cursor plugin — PRD-to-code pipeline via an eight-subagent swarm, spanning backend and UI tracks.
+**Turn a product requirements doc into working backend and UI code with an eight-agent swarm.** Drop in `prd/current.md`, run `/ship-prd`, and specialized subagents decompose, design, implement, and QA — including browser-driven visual checks for every UI story.
 
-Drop in a product requirements document, run one command, and a coordinated swarm of specialized AI subagents decomposes it into track-tagged stories, designs architecture, writes UX specs, implements backend and frontend, and gates every UI-facing story behind real browser-driven visual QA — each stage in its own sandboxed context window.
+Works as a plugin for **Cursor** and **Claude Code**. Sibling of the backend-only [`agent-swarm`](https://github.com/mandar-zope/orchestrator) plugin, extended with `ui` / `fullstack` tracks, UX design, and visual QA.
 
-This is the fullstack sibling of the backend-only [`agent-swarm`](https://github.com/mandar-zope/orchestrator) plugin: same orchestration model (typed state machine, no subagent-to-subagent dispatch, mandatory `<status>` handoff block), extended with a `track` (backend/ui/fullstack) on every story and three more subagents to carry UI work all the way to a verified screen.
+<p align="center">
+  <img src="assets/pipeline.svg" alt="Pipeline: PRD to stories to design to build to QA to DONE" width="920" />
+</p>
 
-## What you get
+## Why it exists
 
-| Subagent | Tracks | Job |
-|---|---|---|
-| `project-manager` | all | Decomposes PRD → atomic, track-tagged user stories |
-| `solution-architect` | all | Writes HLD + ADRs per story |
-| `tech-lead` | all | Writes LLD (modules, signatures, test strategy), confirms track |
-| `ux-designer` | ui, fullstack | Writes UX spec + shared design tokens — no code |
-| `developer` | backend | Implements backend LLD, writes tests, runs suite |
-| `frontend-developer` | ui, fullstack | Implements UX spec + LLD under `web/`, writes tests, builds |
-| `qa-engineer` | all | Validates ACs, probes edge cases, PASS/FAIL — routes UI PASS to visual-qa |
-| `visual-qa` | ui, fullstack | Runs the real app, drives flows with browser automation, screenshots, PASS/FAIL |
+Most agent setups dump everything into one context window. fullstack-swarm keeps a typed status machine in the main session and dispatches **one specialized subagent per stage**. Subagents never call each other — every handoff goes through the orchestrator — so you get clear artifacts (`stories/`, `design/`, `src/`, `web/`, `tests/`) and a queue you can inspect with `/status`.
 
-The orchestrator (you, via `CLAUDE.md` / the Cursor orchestrator rule) routes every handoff through a typed state machine. Subagents cannot dispatch each other — all handoffs are explicit, and every story carries a `track` that determines which implementer, and whether a UX/visual-QA detour, it goes through.
+## Quick start
 
-## Install — Cursor
+### 1. Install the plugin
 
-**Local development (symlink):**
+<details>
+<summary><strong>Cursor</strong> (recommended for local try-out)</summary>
 
 ```bash
+git clone git@github.com:mandarzope/fullstack-swarm.git
 mkdir -p ~/.cursor/plugins/local
-ln -s /path/to/fullstack-swarm ~/.cursor/plugins/local/fullstack-swarm
+ln -s "$(pwd)/fullstack-swarm" ~/.cursor/plugins/local/fullstack-swarm
 ```
 
-Restart Cursor (or reload plugins). Skills, agents, commands, and the always-apply orchestrator rule load from this repo.
+Restart Cursor (or reload plugins). Then open any project and continue with step 2.
 
-**Marketplace:** submit the GitHub repo at [cursor.com/marketplace/publish](https://cursor.com/marketplace/publish) once ready. Manifest lives at `.cursor-plugin/plugin.json`.
+</details>
 
-## Install — Claude Code
-
-`plugin install` only resolves plugins that appear in a **configured marketplace**; a bare directory path or bare repo is not a valid install target on its own.
-
-**From GitHub, run once:**
+<details>
+<summary><strong>Claude Code</strong> — from GitHub</summary>
 
 ```bash
 claude plugin marketplace add mandarzope/fullstack-swarm
 claude plugin install fullstack-swarm
 ```
 
-Use `fullstack-swarm` (the `name` in `.claude-plugin/plugin.json`), not the repo path.
+Use the plugin name `fullstack-swarm`, not the repo path.
 
-**From a local clone (local path as marketplace):**
+</details>
+
+<details>
+<summary><strong>Claude Code</strong> — from a local clone</summary>
 
 ```bash
-claude plugin marketplace add /path/to/fullstack-swarm
+git clone git@github.com:mandarzope/fullstack-swarm.git
+cd fullstack-swarm
+claude plugin marketplace add "$(pwd)"
 claude plugin install fullstack-swarm
 ```
 
-**Develop without installing** (loads the plugin for that session only):
+Session-only (no install):
 
 ```bash
 claude --plugin-dir /path/to/fullstack-swarm
 ```
 
-## Quick start (any project)
+</details>
 
-In the target project — a fresh repo or an existing one — with the plugin installed:
+### 2. Scaffold a project
 
-```
+In the **target** repo (fresh or existing):
+
+```text
 /swarm-init
 ```
 
-This scaffolds `.claude/agents/`, `.claude/commands/`, `.cursor/rules/orchestrator.mdc`, `CLAUDE.md`, and the `prd/ stories/ design/ src/ web/ tests/` directories in the **current working directory**. Safe to re-run; skips files that already exist unless you pass `--force`.
+This creates `prd/`, `stories/`, `design/`, `src/`, `web/`, `tests/`, `CLAUDE.md`, `.claude/agents/`, and `.cursor/rules/orchestrator.mdc`. Safe to re-run; skips existing files unless you pass `--force`.
 
-Then:
+### 3. Ship from a PRD
 
-```
-prd/current.md          # write your PRD here
-/ship-prd                # decomposes the PRD and runs the pipeline autonomously
-/status                  # inspect the queue at any time
-/next                    # advance manually if you stopped autonomous mode
+```bash
+# write requirements
+$EDITOR prd/current.md
 ```
 
-## Status vocabulary
+Then in the agent:
 
-`DRAFT → READY_FOR_ARCH → READY_FOR_LLD → (READY_FOR_UX_DESIGN →) READY_FOR_BUILD → READY_FOR_QA → (READY_FOR_VISUAL_QA →) DONE`, with `FAILING_QA` / `FAILING_VISUAL_QA` / `BLOCKED` as branch points. Backend stories skip the parenthesized UI-only stages entirely. See `CLAUDE.md` for the full state machine and track-routing table.
+```text
+/ship-prd
+```
+
+Watch progress anytime:
+
+```text
+/status
+```
+
+Resume after a stop or human gate:
+
+```text
+/next
+```
+
+## Commands
+
+| Command | What it does |
+|---|---|
+| `/swarm-init` | Scaffold dirs, agents, orchestrator rules |
+| `/ship-prd` | Decompose `prd/current.md` and run the pipeline |
+| `/status` | Read-only queue table + next dispatch |
+| `/next` | Keep dispatching eligible stories until DONE / BLOCKED / stuck |
+
+## The swarm
+
+| Subagent | Tracks | Job |
+|---|---|---|
+| `project-manager` | all | PRD → atomic, track-tagged stories |
+| `solution-architect` | all | HLD + ADRs |
+| `tech-lead` | all | LLD + confirmed track |
+| `ux-designer` | ui, fullstack | UX spec + design tokens (no code) |
+| `developer` | backend | Implement + tests under `src/` |
+| `frontend-developer` | ui, fullstack | Implement + tests under `web/` |
+| `qa-engineer` | all | Functional QA report |
+| `visual-qa` | ui, fullstack | Live browser checks + screenshots |
+
+**Tracks:** `backend` skips UX and visual QA. `ui` / `fullstack` go through both.
+
+**Statuses:**  
+`DRAFT → READY_FOR_ARCH → READY_FOR_LLD → (READY_FOR_UX_DESIGN →) READY_FOR_BUILD → READY_FOR_QA → (READY_FOR_VISUAL_QA →) DONE`  
+with `FAILING_QA` / `FAILING_VISUAL_QA` / `BLOCKED` as branch points. Full rules live in [`CLAUDE.md`](CLAUDE.md).
 
 ## Repo layout
 
-This repo doubles as a working example of the pipeline it ships. Installable surfaces:
-
 | Path | Role |
 |---|---|
-| `.cursor-plugin/` | Cursor plugin + marketplace manifests |
-| `.claude-plugin/` | Claude Code plugin + marketplace manifests |
-| `agents/` | Eight subagents (Cursor discovery; keep in sync with `.claude/agents/`) |
-| `commands/` | `/ship-prd`, `/status`, `/next` (Cursor discovery; keep in sync with `.claude/commands/`) |
-| `skills/` | Same four workflows as skills (`swarm-init`, `ship-prd`, `status`, `next`) |
-| `rules/orchestrator.mdc` | Cursor always-apply orchestrator constitution |
-| `.claude/agents/`, `.claude/commands/`, `CLAUDE.md`, scaffold dirs | Live copy of what `/swarm-init` writes into a fresh project |
+| `.cursor-plugin/` | Cursor plugin manifests |
+| `.claude-plugin/` | Claude Code plugin manifests |
+| `agents/` · `commands/` · `skills/` · `rules/` | Installable plugin surface |
+| `.claude/agents/` · `CLAUDE.md` · scaffold dirs | What `/swarm-init` writes into a project |
 
-## Why a separate plugin from `agent-swarm`
+## Contributing
 
-`agent-swarm` is deliberately backend-only and five agents — simple, fast, no UI opinions. `fullstack-swarm` adds a real track-routing state machine and three more roles because "PASS the tests" isn't the same bar as "a human would accept this screen." Use whichever one matches the project; they can't be merged into one plugin without either agent-swarm consumers gaining UI-track complexity they didn't ask for, or a runtime flag doing the same job less legibly.
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for how to change agents, skills, and manifests in sync.  
+By participating, you agree to the [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md).  
+Security reports: [`SECURITY.md`](SECURITY.md).
+
+## License
+
+[MIT](LICENSE.md) © mandar-zope

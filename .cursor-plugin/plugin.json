@@ -4,5 +4,8 @@
   "version": "1.1.0",
   "author": { "name": "mandar-zope" },
   "license": "MIT",
+  "homepage": "https://github.com/mandarzope/fullstack-swarm",
+  "repository": "https://github.com/mandarzope/fullstack-swarm",
+  "logo": "assets/logo.svg",
   "keywords": ["agents", "swarm", "pipeline", "prd", "orchestrator", "multi-agent", "loop", "ui", "visual-qa"]
 }

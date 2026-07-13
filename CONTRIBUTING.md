@@ -1,5 +1,14 @@
 # Contributing to fullstack-swarm
 
+Thanks for helping improve fullstack-swarm. By participating, you agree to follow our [Code of Conduct](CODE_OF_CONDUCT.md).
+
+## Ways to contribute
+
+- Fix docs or install instructions that confused you
+- Report bugs with a minimal reproduction (plugin host, command run, queue state)
+- Improve agent prompts, dispatch rules, or `/swarm-init` scaffolding
+- Propose status/track changes with a concrete failure mode (these are load-bearing)
+
 ## Repo layout
 
 - `skills/` — installable skills. Each `skills/<name>/SKILL.md` becomes a slash-invokable workflow. **`skills/swarm-init/SKILL.md` embeds the canonical copy of every file `/swarm-init` writes.**
@@ -52,6 +61,12 @@ claude plugin install fullstack-swarm
 ```
 
 Then in a scratch project directory: `/swarm-init`, drop a toy PRD in `prd/current.md`, run `/ship-prd`, and watch the queue in `stories/_queue.json` move through the full state machine — including at least one `ui`/`fullstack` story so the UX-design and visual-QA stages actually run.
+
+## Pull requests
+
+1. Keep PRs focused (one concern per PR when possible).
+2. Update docs when behavior or install steps change.
+3. Do not commit secrets, `.env` files, or generated QA screenshots unless they are intentional fixtures.
 
 ## What to keep in mind when editing an agent definition
 
