@@ -1,6 +1,6 @@
 # fullstack-swarm
 
-Claude Code plugin — PRD-to-code pipeline via an eight-subagent swarm, spanning backend and UI tracks.
+Claude Code **and** Cursor plugin — PRD-to-code pipeline via an eight-subagent swarm, spanning backend and UI tracks.
 
 Drop in a product requirements document, run one command, and a coordinated swarm of specialized AI subagents decomposes it into track-tagged stories, designs architecture, writes UX specs, implements backend and frontend, and gates every UI-facing story behind real browser-driven visual QA — each stage in its own sandboxed context window.
 
@@ -19,9 +19,22 @@ This is the fullstack sibling of the backend-only [`agent-swarm`](https://github
 | `qa-engineer` | all | Validates ACs, probes edge cases, PASS/FAIL — routes UI PASS to visual-qa |
 | `visual-qa` | ui, fullstack | Runs the real app, drives flows with browser automation, screenshots, PASS/FAIL |
 
-The orchestrator (you, via `CLAUDE.md`) routes every handoff through a typed state machine. Subagents cannot dispatch each other — all handoffs are explicit, and every story carries a `track` that determines which implementer, and whether a UX/visual-QA detour, it goes through.
+The orchestrator (you, via `CLAUDE.md` / the Cursor orchestrator rule) routes every handoff through a typed state machine. Subagents cannot dispatch each other — all handoffs are explicit, and every story carries a `track` that determines which implementer, and whether a UX/visual-QA detour, it goes through.
 
-## Install
+## Install — Cursor
+
+**Local development (symlink):**
+
+```bash
+mkdir -p ~/.cursor/plugins/local
+ln -s /path/to/fullstack-swarm ~/.cursor/plugins/local/fullstack-swarm
+```
+
+Restart Cursor (or reload plugins). Skills, agents, commands, and the always-apply orchestrator rule load from this repo.
+
+**Marketplace:** submit the GitHub repo at [cursor.com/marketplace/publish](https://cursor.com/marketplace/publish) once ready. Manifest lives at `.cursor-plugin/plugin.json`.
+
+## Install — Claude Code
 
 `plugin install` only resolves plugins that appear in a **configured marketplace**; a bare directory path or bare repo is not a valid install target on its own.
 
@@ -55,7 +68,7 @@ In the target project — a fresh repo or an existing one — with the plugin in
 /swarm-init
 ```
 
-This scaffolds `.claude/agents/`, `.claude/commands/`, `CLAUDE.md`, and the `prd/ stories/ design/ src/ web/ tests/` directories in the **current working directory**. Safe to re-run; skips files that already exist unless you pass `--force`.
+This scaffolds `.claude/agents/`, `.claude/commands/`, `.cursor/rules/orchestrator.mdc`, `CLAUDE.md`, and the `prd/ stories/ design/ src/ web/ tests/` directories in the **current working directory**. Safe to re-run; skips files that already exist unless you pass `--force`.
 
 Then:
 
@@ -72,7 +85,17 @@ prd/current.md          # write your PRD here
 
 ## Repo layout
 
-This repo doubles as a working example of the pipeline it ships: `.claude/agents/`, `.claude/commands/`, `CLAUDE.md`, and the `prd/ stories/ design/ src/ web/ tests/` scaffold at the root are a live copy of what `/swarm-init` writes into a fresh project, kept in sync by hand. The actual installable surface is `skills/` — those four skills (`swarm-init`, `ship-prd`, `status`, `next`) become the plugin's slash commands wherever it's installed.
+This repo doubles as a working example of the pipeline it ships. Installable surfaces:
+
+| Path | Role |
+|---|---|
+| `.cursor-plugin/` | Cursor plugin + marketplace manifests |
+| `.claude-plugin/` | Claude Code plugin + marketplace manifests |
+| `agents/` | Eight subagents (Cursor discovery; keep in sync with `.claude/agents/`) |
+| `commands/` | `/ship-prd`, `/status`, `/next` (Cursor discovery; keep in sync with `.claude/commands/`) |
+| `skills/` | Same four workflows as skills (`swarm-init`, `ship-prd`, `status`, `next`) |
+| `rules/orchestrator.mdc` | Cursor always-apply orchestrator constitution |
+| `.claude/agents/`, `.claude/commands/`, `CLAUDE.md`, scaffold dirs | Live copy of what `/swarm-init` writes into a fresh project |
 
 ## Why a separate plugin from `agent-swarm`
 

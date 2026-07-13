@@ -1,0 +1,10 @@
+---
+description: fullstack-swarm orchestrator constitution — dispatch rules, track routing, and status vocabulary for the eight-agent PRD-to-code pipeline
+alwaysApply: true
+---
+
+# fullstack-swarm orchestrator
+
+Follow `CLAUDE.md` at the repository root exactly. It is the operating constitution for this pipeline: status vocabulary, track routing, dispatch decision rules, mandatory `<status>` handoff block, house rules, and slash commands (`/ship-prd`, `/status`, `/next`).
+
+Do not invent statuses, tracks, or dispatch shortcuts. Do not implement stories yourself — always dispatch the appropriate subagent.

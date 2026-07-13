@@ -2,7 +2,7 @@
   "name": "fullstack-swarm",
   "owner": { "name": "mandar-zope" },
   "metadata": {
-    "description": "PRD-to-code pipeline via an eight-subagent swarm for Claude Code, spanning backend and UI tracks"
+    "description": "PRD-to-code pipeline via an eight-subagent swarm for Cursor, spanning backend and UI tracks"
   },
   "plugins": [
     {

@@ -1,3 +1,8 @@
+---
+description: fullstack-swarm orchestrator constitution — dispatch rules, track routing, and status vocabulary for the eight-agent PRD-to-code pipeline
+alwaysApply: true
+---
+
 # Project: fullstack-swarm — PRD-to-code pipeline (backend + UI)
 
 ## Role of this file

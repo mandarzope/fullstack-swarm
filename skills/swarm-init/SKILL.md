@@ -4,14 +4,15 @@ description: >
   Initialize a new project for the fullstack agent swarm pipeline. Creates the
   full directory scaffold, writes all eight subagent definitions to
   .claude/agents/ (backend + UI tracks, UX design, visual QA), writes the
-  three slash commands to .claude/commands/, seeds stories/_queue.json, and
-  writes CLAUDE.md with the orchestrator constitution. Safe to re-run — skips
-  files that already exist unless --force is passed. Use when the user types
-  /swarm-init or says "initialize the swarm", "set up the pipeline",
-  "scaffold the project".
+  three slash commands to .claude/commands/, seeds stories/_queue.json,
+  writes CLAUDE.md with the orchestrator constitution, and writes
+  .cursor/rules/orchestrator.mdc so Cursor picks up the same rules. Safe to
+  re-run — skips files that already exist unless --force is passed. Use when
+  the user types /swarm-init or says "initialize the swarm", "set up the
+  pipeline", "scaffold the project".
 ---
 
-You are initializing a fullstack agent swarm project. Use the Write tool to create every file below in the current working directory. If a file already exists and the user did not pass `--force`, skip it and note it was skipped.
+You are initializing a fullstack agent swarm project (Claude Code + Cursor). Use the Write tool to create every file below in the current working directory. If a file already exists and the user did not pass `--force`, skip it and note it was skipped.
 
 ## Step 1 — Create directory structure
 
@@ -19,6 +20,7 @@ Create these directories (use Bash `mkdir -p`):
 ```
 .claude/agents/
 .claude/commands/
+.cursor/rules/
 prd/
 stories/
 design/hld/adrs/
@@ -42,7 +44,7 @@ You are the **orchestrator** of an eight-agent software delivery swarm. This fil
 
 ## The swarm
 
-Eight subagents live in `.claude/agents/`. Each runs in its own context window with restricted tools, scoped to one job. Every story carries a `track`: `backend` (API/worker/data, no UI surface), `ui` (a frontend-only slice consuming an already-built API), or `fullstack` (only when a single deployable unit genuinely can't be split).
+Eight subagents ship with the fullstack-swarm plugin (`agents/`) and, after `/swarm-init`, also live in `.claude/agents/` for Claude Code. Each runs in its own context window with restricted tools, scoped to one job. Every story carries a `track`: `backend` (API/worker/data, no UI surface), `ui` (a frontend-only slice consuming an already-built API), or `fullstack` (only when a single deployable unit genuinely can't be split).
 
 | Subagent              | Tracks handled   | Reads                                   | Writes                                | Hands off as                          |
 | ---------------------- | ---------------- | ---------------------------------------- | -------------------------------------- | --------------------------------------- |
@@ -158,7 +160,24 @@ Slugs are `STORY-NNN` with zero-padded sequential integers. Slugs are immutable 
 - Do not write stories, designs, UX specs, code, or tests yourself. Always dispatch the appropriate subagent.
 - Do not bypass the state machine. A `READY_FOR_ARCH` story goes to the architect even if the human asks for a "quick fix".
 - Do not invent statuses or tracks outside the vocabulary above.
-- Do not modify `.claude/agents/*.md` mid-run. If a subagent definition needs changing, stop and tell the human.
+- Do not modify plugin `agents/*.md` or `.claude/agents/*.md` mid-run. If a subagent definition needs changing, stop and tell the human.
+~~~~~
+
+## Step 2b — Write Cursor orchestrator rule
+
+Write `.cursor/rules/orchestrator.mdc` with this exact content so Cursor always loads the constitution (single source of truth remains `CLAUDE.md`):
+
+~~~~~markdown
+---
+description: fullstack-swarm orchestrator constitution — dispatch rules, track routing, and status vocabulary for the eight-agent PRD-to-code pipeline
+alwaysApply: true
+---
+
+# fullstack-swarm orchestrator
+
+Follow `CLAUDE.md` at the repository root exactly. It is the operating constitution for this pipeline: status vocabulary, track routing, dispatch decision rules, mandatory `<status>` handoff block, house rules, and slash commands (`/ship-prd`, `/status`, `/next`).
+
+Do not invent statuses, tracks, or dispatch shortcuts. Do not implement stories yourself — always dispatch the appropriate subagent.
 ~~~~~
 
 ## Step 3 — Write subagent definitions
@@ -911,6 +930,7 @@ Write `.claude/commands/ship-prd.md`:
 
 ~~~~~markdown
 ---
+name: ship-prd
 description: Kick off the track-aware agent swarm pipeline from prd/current.md, autonomously draining stories until all DONE, BLOCKED, or stuck.
 ---
 
@@ -950,6 +970,7 @@ Write `.claude/commands/status.md`:
 
 ~~~~~markdown
 ---
+name: status
 description: Show the current pipeline state and what would dispatch next (read-only).
 ---
 
@@ -969,6 +990,7 @@ Write `.claude/commands/next.md`:
 
 ~~~~~markdown
 ---
+name: next
 description: Run the pipeline autonomously — repeatedly dispatch eligible stories in parallel (cap 7), track-aware, until BLOCKED, full completion, or no dispatchable work.
 ---
 
@@ -1212,7 +1234,8 @@ Before reporting done, verify:
 3. `stories/_queue.json` is valid JSON: `{"version": 1, "stories": []}`.
 4. `stories/_schema.json` is valid JSON Schema.
 5. `CLAUDE.md` exists at the repository root.
-6. No code was run, no packages installed, no git operations performed (beyond what the user explicitly asked for).
+6. `.cursor/rules/orchestrator.mdc` exists with `alwaysApply: true` frontmatter.
+7. No code was run, no packages installed, no git operations performed (beyond what the user explicitly asked for).
 
 Print this exact block to the user when you finish:
 
@@ -1225,6 +1248,6 @@ Scaffold created. Next steps:
 4. Use /status to inspect the queue at any time
 5. Use /next to advance the pipeline (or let /ship-prd run autonomously)
 
-The eight subagents are now defined. The main session is the orchestrator.
-Read CLAUDE.md once before your first /ship-prd to internalize the rules.
+Works in Claude Code and Cursor. The eight subagents are defined; the main session is the orchestrator.
+Read CLAUDE.md (or the Cursor always-apply orchestrator rule) before your first /ship-prd.
 ~~~
