@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="fullstack-swarm logo">
+  <rect width="128" height="128" rx="28" fill="#0f172a"/>
+  <g fill="none" stroke-linecap="round" stroke-width="3">
+    <circle cx="64" cy="64" r="10" fill="#14b8a6" stroke="#14b8a6"/>
+    <circle cx="64" cy="28" r="7" fill="#38bdf8" stroke="#38bdf8"/>
+    <circle cx="95" cy="46" r="7" fill="#f59e0b" stroke="#f59e0b"/>
+    <circle cx="95" cy="82" r="7" fill="#38bdf8" stroke="#38bdf8"/>
+    <circle cx="64" cy="100" r="7" fill="#22c55e" stroke="#22c55e"/>
+    <circle cx="33" cy="82" r="7" fill="#f59e0b" stroke="#f59e0b"/>
+    <circle cx="33" cy="46" r="7" fill="#38bdf8" stroke="#38bdf8"/>
+    <circle cx="110" cy="64" r="5" fill="#94a3b8" stroke="#94a3b8"/>
+    <path d="M64 38 L64 54 M82 50 L72 58 M82 78 L72 70 M64 90 L64 74 M46 78 L56 70 M46 50 L56 58 M98 64 L74 64" stroke="#64748b"/>
+  </g>
+</svg>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>fullstack-swarm — PRD to working code</title>
+  <meta name="description" content="Turn a product requirements doc into working backend and UI code with an eight-agent swarm. Plugin for Cursor and Claude Code." />
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-mono/style.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" id="top">
+    <div class="header-inner">
+      <a class="brand" href="#top" aria-label="fullstack-swarm home">
+        <img src="assets/logo.svg" alt="" width="28" height="28" />
+        <span class="brand-word">fullstack-swarm<span class="brand-dot" aria-hidden="true"></span></span>
+      </a>
+
+      <nav class="nav-desktop" aria-label="Primary">
+        <a href="#pipeline"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>Docs</a>
+        <a href="#swarm"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.8 5.41a2 2 0 0 1-1.27 1.27L7.76 16.24l1.8-5.41a2 2 0 0 1 1.27-1.27z"/></svg>Guides</a>
+        <a href="#commands"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 17l6-6-6-6"/><path d="M12 19h8"/></svg>Commands</a>
+        <a href="#faq"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>FAQ</a>
+      </nav>
+
+      <div class="header-utils">
+        <a class="btn-github" href="https://github.com/mandarzope/fullstack-swarm" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.73.5.5 5.74.5 12.02c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18.92-.26 1.9-.39 2.88-.39s1.96.13 2.88.39c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.77.12 3.06.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.4-5.25 5.68.41.36.78 1.07.78 2.16 0 1.56-.02 2.82-.02 3.21 0 .31.21.67.8.55C20.71 21.4 24 17.09 24 12.02 24 5.74 18.77.5 12 .5z"/></svg>
+          <span>GitHub</span>
+        </a>
+        <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+        </button>
+        <button type="button" class="nav-menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav class="nav-mobile" id="mobileNav" hidden aria-label="Mobile">
+      <a href="#pipeline">Docs</a>
+      <a href="#swarm">Guides</a>
+      <a href="#commands">Commands</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- Hero: split stage -->
+    <section class="hero-stage" aria-labelledby="hero-title">
+      <div class="hero-frame">
+        <aside class="hero-left">
+          <p class="hero-brand" id="hero-title">fullstack-swarm</p>
+          <h1 class="hero-headline">PRD to working code.</h1>
+          <p class="hero-desc">
+            Drop in <code>prd/current.md</code>, run <code>/ship-prd</code>, and an eight-agent swarm decomposes, designs, implements, and QAs — including browser-driven visual checks for every UI story.
+          </p>
+          <div class="hero-actions">
+            <a class="btn-primary" href="#quickstart">
+              Get Started
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+            </a>
+            <a class="btn-secondary" href="#swarm">Meet the swarm</a>
+          </div>
+          <div class="hero-marquee" aria-label="Highlights">
+            <div class="marquee-track">
+              <span>8 specialized subagents</span>
+              <span>Cursor + Claude Code</span>
+              <span>Backend · UI · Fullstack tracks</span>
+              <span>Visual QA built in</span>
+              <span>Typed status machine</span>
+              <span>8 specialized subagents</span>
+              <span>Cursor + Claude Code</span>
+              <span>Backend · UI · Fullstack tracks</span>
+              <span>Visual QA built in</span>
+              <span>Typed status machine</span>
+            </div>
+          </div>
+        </aside>
+
+        <div class="hero-right paper-grid" aria-hidden="false">
+          <div class="terminal" role="img" aria-label="Pipeline dispatch simulation">
+            <div class="terminal-chrome">
+              <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+              <span class="terminal-title">agent_trace · fullstack-swarm</span>
+            </div>
+            <pre class="terminal-body"><code><span class="t-muted">$</span> <span class="t-cmd">/ship-prd</span>
+<span class="t-ok">●</span> <span class="t-bold">STORY-001</span>  <span class="t-muted">track:backend</span>
+│
+├─ <span class="t-role">PM</span>     project-manager     <span class="t-score">READY_FOR_ARCH</span>
+├─ <span class="t-role">ARCH</span>   solution-architect  <span class="t-score">READY_FOR_LLD</span>
+├─ <span class="t-role">TL</span>     tech-lead           <span class="t-score">READY_FOR_BUILD</span>
+├─ <span class="t-role">DEV</span>    developer           <span class="t-score">READY_FOR_QA</span>
+└─ <span class="t-role">QA</span>     qa-engineer         <span class="t-pass">DONE</span>
+
+<span class="t-ok">●</span> <span class="t-bold">STORY-002</span>  <span class="t-muted">track:ui</span>
+│
+├─ <span class="t-role">UX</span>     ux-designer         <span class="t-score">READY_FOR_BUILD</span>
+├─ <span class="t-role">FE</span>     frontend-developer  <span class="t-score">READY_FOR_QA</span>
+├─ <span class="t-role">QA</span>     qa-engineer         <span class="t-score">READY_FOR_VISUAL_QA</span>
+└─ <span class="t-role">VQA</span>    visual-qa           <span class="t-pass">DONE</span>
+
+<span class="t-muted">Queue score</span>  <span class="t-pass">2/2 stories shipped</span>  <span class="t-pass">passed</span></code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why -->
+    <section class="section" id="why">
+      <div class="section-inner split-copy">
+        <div>
+          <p class="eyebrow">Evaluate</p>
+          <h2>One orchestrator.<br />Eight specialists.</h2>
+        </div>
+        <div class="prose-block">
+          <p>Most agent setups dump everything into one context window. fullstack-swarm keeps a typed status machine in the main session and dispatches <strong>one specialized subagent per stage</strong>.</p>
+          <p>Subagents never call each other — every handoff goes through the orchestrator — so you get clear artifacts and a queue you can inspect with <code>/status</code>.</p>
+        </div>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature">
+          <h3>Track-aware routing</h3>
+          <p><code>backend</code>, <code>ui</code>, and <code>fullstack</code> stories take different paths — UX design and visual QA only where they belong.</p>
+        </article>
+        <article class="feature">
+          <h3>Inspectable queue</h3>
+          <p>Every story lives in <code>stories/_queue.json</code> with a status, deps, and history. No black-box loops.</p>
+        </article>
+        <article class="feature">
+          <h3>Visual QA gate</h3>
+          <p>UI stories don’t ship on green unit tests alone — a browser-driven visual check is the final gate to DONE.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Pipeline -->
+    <section class="section section-alt" id="pipeline">
+      <div class="section-inner">
+        <p class="eyebrow">Flexible techniques</p>
+        <h2>Decompose → design → build → QA.</h2>
+        <p class="section-lead">Compose a full delivery loop from a single PRD — plain-English requirements in, scored artifacts out.</p>
+      </div>
+
+      <div class="pipeline-board paper-grid">
+        <ol class="pipeline-steps">
+          <li><span class="step-id">01</span><span class="step-name">project-manager</span><span class="step-out">READY_FOR_ARCH</span></li>
+          <li><span class="step-id">02</span><span class="step-name">solution-architect</span><span class="step-out">READY_FOR_LLD</span></li>
+          <li><span class="step-id">03</span><span class="step-name">tech-lead</span><span class="step-out">READY_FOR_BUILD</span></li>
+          <li><span class="step-id">04</span><span class="step-name">ux-designer</span><span class="step-out">ui / fullstack</span></li>
+          <li><span class="step-id">05</span><span class="step-name">developer / frontend</span><span class="step-out">READY_FOR_QA</span></li>
+          <li><span class="step-id">06</span><span class="step-name">qa-engineer</span><span class="step-out">DONE / VISUAL</span></li>
+          <li><span class="step-id">07</span><span class="step-name">visual-qa</span><span class="step-out">DONE</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Swarm -->
+    <section class="section" id="swarm">
+      <div class="section-inner">
+        <p class="eyebrow">The swarm</p>
+        <h2>Specialists, not a monolith.</h2>
+        <p class="section-lead">Each agent runs in its own context with restricted tools, scoped to one job.</p>
+      </div>
+      <div class="agent-table-wrap">
+        <table class="agent-table">
+          <thead>
+            <tr>
+              <th>Subagent</th>
+              <th>Tracks</th>
+              <th>Job</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>project-manager</code></td><td>all</td><td>PRD → atomic, track-tagged stories</td></tr>
+            <tr><td><code>solution-architect</code></td><td>all</td><td>HLD + ADRs</td></tr>
+            <tr><td><code>tech-lead</code></td><td>all</td><td>LLD + confirmed track</td></tr>
+            <tr><td><code>ux-designer</code></td><td>ui, fullstack</td><td>UX spec + design tokens</td></tr>
+            <tr><td><code>developer</code></td><td>backend</td><td>Implement + tests under <code>src/</code></td></tr>
+            <tr><td><code>frontend-developer</code></td><td>ui, fullstack</td><td>Implement + tests under <code>web/</code></td></tr>
+            <tr><td><code>qa-engineer</code></td><td>all</td><td>Functional QA report</td></tr>
+            <tr><td><code>visual-qa</code></td><td>ui, fullstack</td><td>Live browser checks + screenshots</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Commands / Quick start -->
+    <section class="section section-alt" id="quickstart">
+      <div class="section-inner split-copy">
+        <div>
+          <p class="eyebrow">Trace, grade, iterate</p>
+          <h2>Ship without leaving your editor.</h2>
+        </div>
+        <div class="prose-block">
+          <p>Works as a plugin for <strong>Cursor</strong> and <strong>Claude Code</strong>. Scaffold once, write a PRD, then drive the pipeline with slash commands.</p>
+        </div>
+      </div>
+
+      <div class="code-panels">
+        <div class="code-panel">
+          <div class="code-tab">install · Cursor</div>
+          <pre><code>git clone git@github.com:mandarzope/fullstack-swarm.git
+mkdir -p ~/.cursor/plugins/local
+ln -s "$(pwd)/fullstack-swarm" ~/.cursor/plugins/local/fullstack-swarm</code></pre>
+        </div>
+        <div class="code-panel">
+          <div class="code-tab">ship · agent</div>
+          <pre><code>/swarm-init
+# write prd/current.md
+/ship-prd
+/status
+/next</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="commands">
+      <div class="section-inner">
+        <p class="eyebrow">Commands</p>
+        <h2>Four verbs. Full pipeline.</h2>
+      </div>
+      <div class="cmd-grid">
+        <article class="cmd-card">
+          <h3><code>/swarm-init</code></h3>
+          <p>Scaffold dirs, agents, and orchestrator rules into the target repo.</p>
+        </article>
+        <article class="cmd-card">
+          <h3><code>/ship-prd</code></h3>
+          <p>Decompose <code>prd/current.md</code> and run the autonomous pipeline.</p>
+        </article>
+        <article class="cmd-card">
+          <h3><code>/status</code></h3>
+          <p>Read-only queue table plus the exact next dispatch.</p>
+        </article>
+        <article class="cmd-card">
+          <h3><code>/next</code></h3>
+          <p>Keep dispatching eligible stories until DONE, BLOCKED, or stuck.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Platforms -->
+    <section class="section section-alt" id="platforms">
+      <div class="section-inner center">
+        <p class="eyebrow">Any editor. Any track.</p>
+        <h2>Cursor. Claude Code. Your repo.</h2>
+        <p class="section-lead">Plug fullstack-swarm into the tools you already ship with — no rewrite required.</p>
+      </div>
+      <ul class="logo-row" aria-label="Supported platforms">
+        <li>Cursor</li>
+        <li>Claude Code</li>
+        <li>GitHub</li>
+        <li>backend</li>
+        <li>ui</li>
+        <li>fullstack</li>
+      </ul>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="section-inner">
+        <p class="eyebrow">Ah yes, FAQs.</p>
+        <h2>Questions, answered.</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item" open>
+          <summary>What is fullstack-swarm?</summary>
+          <p>An eight-agent software delivery swarm packaged as a Cursor / Claude Code plugin. It turns a PRD into working backend and UI code through a typed status machine and specialized subagents.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How is this different from one big coding agent?</summary>
+          <p>Subagents cannot dispatch each other. Every handoff routes through the orchestrator, producing inspectable artifacts (<code>stories/</code>, <code>design/</code>, <code>src/</code>, <code>web/</code>, <code>tests/</code>) instead of an opaque chat transcript.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Do I need both Cursor and Claude Code?</summary>
+          <p>No. Install whichever you use. The same agents, commands, and scaffold work in both environments.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What are tracks?</summary>
+          <p><code>backend</code> skips UX and visual QA. <code>ui</code> and <code>fullstack</code> go through UX design and browser-driven visual QA before DONE.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I resume after a stop?</summary>
+          <p>Yes. Run <code>/status</code> to see the queue, then <code>/next</code> to continue dispatching from where the pipeline left off.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="cta-band" id="cta">
+      <div class="cta-inner paper-grid">
+        <p class="eyebrow">Ready when you are</p>
+        <h2>Start shipping.</h2>
+        <p>Clone the plugin, run <code>/swarm-init</code>, drop a PRD, and let the swarm take it from there.</p>
+        <div class="hero-actions">
+          <a class="btn-primary" href="https://github.com/mandarzope/fullstack-swarm" target="_blank" rel="noopener noreferrer">
+            Get Started
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+          </a>
+          <a class="btn-secondary" href="#quickstart">View install</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a class="brand" href="#top">
+        <img src="assets/logo.svg" alt="" width="24" height="24" />
+        <span>fullstack-swarm</span>
+      </a>
+      <p>MIT © mandar-zope · Sibling of <a href="https://github.com/mandar-zope/orchestrator">agent-swarm</a></p>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
