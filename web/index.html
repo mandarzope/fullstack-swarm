@@ -201,16 +201,24 @@
           <h2>Ship without leaving your editor.</h2>
         </div>
         <div class="prose-block">
-          <p>Works as a plugin for <strong>Cursor</strong> and <strong>Claude Code</strong>. Scaffold once, write a PRD, then drive the pipeline with slash commands.</p>
+          <p>Works as a plugin for <strong>Cursor</strong> and <strong>Claude Code</strong>. On Claude, add the GitHub repo as a marketplace, then install by plugin name. Scaffold once, write a PRD, then drive the pipeline with slash commands.</p>
         </div>
       </div>
 
-      <div class="code-panels">
+      <div class="code-panels code-panels-3">
         <div class="code-panel">
           <div class="code-tab">install · Cursor</div>
           <pre><code>git clone git@github.com:mandarzope/fullstack-swarm.git
 mkdir -p ~/.cursor/plugins/local
 ln -s "$(pwd)/fullstack-swarm" ~/.cursor/plugins/local/fullstack-swarm</code></pre>
+        </div>
+        <div class="code-panel">
+          <div class="code-tab">install · Claude Code (marketplace)</div>
+          <pre><code>claude plugin marketplace add mandarzope/fullstack-swarm
+claude plugin install fullstack-swarm
+
+# Use the plugin name fullstack-swarm,
+# not the repo path.</code></pre>
         </div>
         <div class="code-panel">
           <div class="code-tab">ship · agent</div>
@@ -279,6 +287,13 @@ ln -s "$(pwd)/fullstack-swarm" ~/.cursor/plugins/local/fullstack-swarm</code></p
         <details class="faq-item">
           <summary>How is this different from one big coding agent?</summary>
           <p>Subagents cannot dispatch each other. Every handoff routes through the orchestrator, producing inspectable artifacts (<code>stories/</code>, <code>design/</code>, <code>src/</code>, <code>web/</code>, <code>tests/</code>) instead of an opaque chat transcript.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How do I install with Claude Code marketplace?</summary>
+          <p>Add the GitHub repo as a marketplace, then install by plugin name:</p>
+          <pre class="faq-code"><code>claude plugin marketplace add mandarzope/fullstack-swarm
+claude plugin install fullstack-swarm</code></pre>
+          <p>Use <code>fullstack-swarm</code> (the plugin name), not the repo path.</p>
         </details>
         <details class="faq-item">
           <summary>Do I need both Cursor and Claude Code?</summary>
