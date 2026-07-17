@@ -43,9 +43,18 @@ If the batch has **multiple** slugs mapping to the **same** subagent role (after
 routing), dispatch them **in parallel** with concurrent Task tool calls (**cap 7** per
 iteration). If the batch is a single story, one Task is enough.
 
-Include in every subagent prompt: slug, `track`, absolute paths to inputs, expected outputs,
-target `next_status` on success, and the prior QA/visual-QA report path when re-dispatching on
-`FAILING_QA`/`FAILING_VISUAL_QA`.
+**Maker ≠ checker:** `qa-engineer` and `visual-qa` must always be fresh Task dispatches —
+never grade in the implementer's context.
+
+Include in every subagent prompt:
+
+- slug, `track`, absolute paths to inputs, expected outputs, target `next_status` on success
+- prior QA/visual-QA report path when re-dispatching on `FAILING_QA`/`FAILING_VISUAL_QA`
+- **Identity reinjection**: one line with the role's `role_id`, `identity_marker`, and
+  `non_negotiables` from that agent's Identity block
+- **Effort / model**: set Task `model` from CLAUDE.md effort routing (`xhigh` for
+  project-manager / solution-architect / tech-lead / qa-engineer / visual-qa; `high` for
+  ux-designer / developer / frontend-developer)
 
 ### 5. Apply results
 

@@ -1,7 +1,7 @@
 {
   "name": "fullstack-swarm",
   "description": "PRD-to-code pipeline via an eight-subagent swarm for Claude Code, spanning backend and UI tracks. Decomposes requirements into track-tagged stories, designs architecture, writes UX specs, implements backend and frontend, and gates every UI story behind real browser-driven visual QA — each stage in its own sandboxed context window.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": { "name": "mandar-zope" },
   "license": "MIT",
   "homepage": "https://github.com/mandarzope/fullstack-swarm",

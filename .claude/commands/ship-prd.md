@@ -13,12 +13,16 @@ If `prd/current.md` is missing, tell the user and stop.
 If `_queue.json` is non-empty, ask the user whether to overwrite (start fresh) or merge
 (decompose only the new sections of the PRD). Do not proceed without an answer.
 
-If both conditions are clean, dispatch the `project-manager` subagent with this prompt:
+If both conditions are clean, dispatch the `project-manager` subagent at **xhigh** effort
+(Task `model`: `claude-opus-4-8[effort=xhigh]` or account-equivalent). Reinject identity:
 
+> Identity: role_id=project-manager, marker=PM. Non-negotiables: do not invent PRD answers;
+> tag every story backend|ui|fullstack; touch only stories/.
+>
 > Decompose `prd/current.md` into user stories, tagging each with a `track`
 > (backend/ui/fullstack). Read `stories/_schema.json` before writing `stories/_queue.json`.
 > Follow your subagent definition exactly. Surface any ambiguities as `questions_for_human`.
-> End with the mandatory `<status>` block.
+> End with the mandatory `<status>` block (`notes` must start with `PM:`).
 
 After the project-manager returns, parse the `<status>` block, update `stories/_queue.json`
 accordingly, and announce the queue state.

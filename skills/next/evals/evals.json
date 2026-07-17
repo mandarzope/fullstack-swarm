@@ -20,7 +20,8 @@
       "expectations": [
         "STORY-020 is routed to developer (track=backend, READY_FOR_BUILD)",
         "STORY-021 is routed to frontend-developer (track=ui, READY_FOR_BUILD)",
-        "Neither story is skipped for unmet deps"
+        "Neither story is skipped for unmet deps",
+        "Dispatch plan includes identity reinjection and high effort for implementers"
       ]
     },
     {
@@ -42,7 +43,8 @@
       "expectations": [
         "First batch is FAILING_QA story STORY-041, not READY_FOR_BUILD STORY-040",
         "STORY-041 is routed to developer (track=backend)",
-        "Dispatch prompt would include the prior QA report path tests/STORY-041-qa.md"
+        "Dispatch prompt would include the prior QA report path tests/STORY-041-qa.md",
+        "Dispatch plan includes identity reinjection (DEV) and high effort for the implementer"
       ]
     }
   ]

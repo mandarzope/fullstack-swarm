@@ -10,6 +10,7 @@
         "Output includes a table or list of every story with slug, track, and status",
         "Output includes per-status counts",
         "Output identifies the next dispatch as frontend-developer for STORY-002 (READY_FOR_BUILD, track=ui)",
+        "Output includes the next role's effort tier (high) and identity_marker (FE)",
         "Agent does not dispatch any subagent (read-only)"
       ]
     },

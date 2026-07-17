@@ -9,7 +9,7 @@
       "name": "fullstack-swarm",
       "source": "./",
       "description": "Decomposes requirements into track-tagged stories, designs architecture, writes UX specs, implements backend and frontend, and gates every UI story behind real browser-driven visual QA — each stage in its own sandboxed context window.",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "author": { "name": "mandar-zope" },
       "license": "MIT",
       "keywords": ["agents", "swarm", "pipeline", "prd", "orchestrator", "multi-agent", "loop", "ui", "visual-qa"]

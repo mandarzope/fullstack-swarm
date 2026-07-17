@@ -122,6 +122,8 @@ Resume after a stop or human gate:
 
 **Tracks:** `backend` skips UX and visual QA. `ui` / `fullstack` go through both.
 
+**Effort + identity:** Judgment and verification roles (`project-manager`, `solution-architect`, `tech-lead`, `qa-engineer`, `visual-qa`) run at **xhigh** reasoning; implementers and UX run at **high**. Each role has a stable identity marker reinjected on every dispatch so the loop does not drift mid-run. Maker and checker stay split — QA never grades in the implementer's context.
+
 **Statuses:**  
 `DRAFT → READY_FOR_ARCH → READY_FOR_LLD → (READY_FOR_UX_DESIGN →) READY_FOR_BUILD → READY_FOR_QA → (READY_FOR_VISUAL_QA →) DONE`  
 with `FAILING_QA` / `FAILING_VISUAL_QA` / `BLOCKED` as branch points. Full rules live in [`CLAUDE.md`](CLAUDE.md).
@@ -133,7 +135,7 @@ with `FAILING_QA` / `FAILING_VISUAL_QA` / `BLOCKED` as branch points. Full rules
 | `.cursor-plugin/` | Cursor plugin manifests |
 | `.claude-plugin/` | Claude Code plugin manifests |
 | `agents/` · `commands/` · `skills/` · `rules/` | Installable plugin surface |
-| `.claude/agents/` · `CLAUDE.md` · scaffold dirs | What `/swarm-init` writes into a project |
+| `.claude/agents/` · `.cursor/agents/` · `CLAUDE.md` · scaffold dirs | What `/swarm-init` writes into a project |
 
 ## Contributing
 

@@ -35,6 +35,7 @@
       ],
       "expectations": [
         "First action is dispatching project-manager with a prompt referencing prd/current.md and stories/_schema.json",
+        "First dispatch uses xhigh effort and PM identity reinjection",
         "Agent states it will parse the <status> block and update stories/_queue.json",
         "Agent states it will continue the autonomous /next loop after project-manager returns (not wait for another /next)"
       ]

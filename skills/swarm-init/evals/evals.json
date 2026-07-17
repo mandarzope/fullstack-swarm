@@ -4,12 +4,12 @@
     {
       "id": 1,
       "prompt": "Initialize the swarm in an empty temp project directory. List every directory and key file you would create (do not write outside the sandbox if instructed; prefer reporting the plan with exact paths).",
-      "expected_output": "Full scaffold plan: .claude/agents/, .claude/commands/, .cursor/rules/, prd/, stories/, design/{hld/adrs,lld,ux}/, src/, web/, tests/, plus CLAUDE.md, eight agent defs, three slash commands, empty _queue.json, orchestrator.mdc.",
+      "expected_output": "Full scaffold plan: .claude/agents/, .cursor/agents/, .claude/commands/, .cursor/rules/, prd/, stories/, design/{hld/adrs,lld,ux}/, src/, web/, tests/, plus CLAUDE.md (with effort routing + identity), eight agent defs, three slash commands, empty _queue.json, orchestrator.mdc.",
       "files": [],
       "expectations": [
-        "Plan includes directories .claude/agents/, .claude/commands/, .cursor/rules/, prd/, stories/, design/hld/adrs/, design/lld/, design/ux/, src/, web/, tests/",
-        "Plan includes writing CLAUDE.md with the fullstack-swarm orchestrator constitution",
-        "Plan includes all eight subagent definitions (project-manager through visual-qa)",
+        "Plan includes directories .claude/agents/, .cursor/agents/, .claude/commands/, .cursor/rules/, prd/, stories/, design/hld/adrs/, design/lld/, design/ux/, src/, web/, tests/",
+        "Plan includes writing CLAUDE.md with the fullstack-swarm orchestrator constitution including effort routing and agent identity",
+        "Plan includes all eight subagent definitions (project-manager through visual-qa) in both .claude/agents/ and .cursor/agents/",
         "Plan includes slash commands ship-prd, status, and next",
         "Plan seeds stories/_queue.json and writes .cursor/rules/orchestrator.mdc"
       ]

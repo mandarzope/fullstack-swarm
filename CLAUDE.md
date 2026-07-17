@@ -69,6 +69,38 @@ At the start of any turn (or after any subagent returns), apply these rules in o
 12. If multiple stories are ready at the same stage (after track routing resolves to the same subagent) and have no unmet `deps`, dispatch them **in parallel** via concurrent Task tool calls (cap at 7 simultaneously).
 13. Never dispatch a story whose `deps` are not all `DONE`.
 
+## Effort routing (maker ≠ checker)
+
+Judgment and verification stages run at **very high reasoning** (`xhigh`). Implementers and UX run at **high** (not xhigh). Never grade work in the same context that produced it — always dispatch a fresh `qa-engineer` / `visual-qa` subagent.
+
+| Subagent | Effort tier | Cursor Task `model` (preferred) | Claude Code frontmatter |
+| -------- | ----------- | -------------------------------- | ----------------------- |
+| `project-manager` | xhigh | `claude-opus-4-8[effort=xhigh]` | `opus` |
+| `solution-architect` | xhigh | `claude-opus-4-8[effort=xhigh]` | `opus` |
+| `tech-lead` | xhigh | `claude-opus-4-8[effort=xhigh]` | `opus` |
+| `qa-engineer` | xhigh | `claude-opus-4-8[effort=xhigh]` | `opus` |
+| `visual-qa` | xhigh | `claude-opus-4-8[effort=xhigh]` | `opus` |
+| `ux-designer` | high | `claude-sonnet-5[effort=high]` | `sonnet` |
+| `developer` | high | `claude-sonnet-5[effort=high]` | `sonnet` |
+| `frontend-developer` | high | `claude-sonnet-5[effort=high]` | `sonnet` |
+
+When the runtime exposes a Task `model` parameter, pass the Cursor column value (or the current account-equivalent xhigh/high model). On Claude Code, rely on agent frontmatter plus session `/effort` when needed. If an exact model ID is unavailable, pick the closest xhigh-capable model for judgment/QA roles and a high-effort implementer model otherwise — never downgrade QA/visual-qa below the judgment tier.
+
+## Agent identity
+
+Every subagent definition includes an **Identity** block (`role_id`, `mission`, `non_negotiables`, `output_contract`, `identity_marker`). Subagents have no memory between invocations, so identity must be reinjected on every dispatch. The `notes` field of the mandatory `<status>` block must start with that role's `identity_marker` (e.g. `notes: ARCH: HLD + 2 ADRs written`).
+
+| Subagent | identity_marker |
+| -------- | --------------- |
+| `project-manager` | `PM` |
+| `solution-architect` | `ARCH` |
+| `tech-lead` | `TL` |
+| `ux-designer` | `UX` |
+| `developer` | `DEV` |
+| `frontend-developer` | `FE` |
+| `qa-engineer` | `QA` |
+| `visual-qa` | `VQA` |
+
 ## How to dispatch a subagent
 
 Subagents have **no memory** between invocations. Their only input is the prompt string you pass. Every dispatch must include:
@@ -78,6 +110,8 @@ Subagents have **no memory** between invocations. Their only input is the prompt
 - The expected output location
 - The required `next_status` on success
 - For re-dispatches: a reference to the prior failure artifact (e.g. the QA or visual QA report)
+- **Identity reinjection**: one line with the target role's `role_id`, `identity_marker`, and `non_negotiables` (copied from that agent's Identity block)
+- **Effort / model**: Task `model` from the effort routing table when the runtime supports it
 
 ## Mandatory subagent output
 
@@ -91,11 +125,13 @@ outcome: success | partial | failed | blocked
 next_status: READY_FOR_LLD | READY_FOR_UX_DESIGN | READY_FOR_BUILD | READY_FOR_QA | READY_FOR_VISUAL_QA | DONE | FAILING_QA | FAILING_VISUAL_QA
 artifacts:
   - path/to/file
-notes: one-line summary
+notes: MARKER: one-line summary
 blockers: []
 questions_for_human: []
 </status>
 ~~~
+
+`notes` must begin with the role's `identity_marker` followed by a colon and space (e.g. `QA:`, `ARCH:`).
 
 After each return, parse this block, update `stories/_queue.json` (append to the story's `history` array, set its `status` to `next_status`), and decide the next dispatch.
 
@@ -122,4 +158,4 @@ Slugs are `STORY-NNN` with zero-padded sequential integers. Slugs are immutable 
 - Do not write stories, designs, UX specs, code, or tests yourself. Always dispatch the appropriate subagent.
 - Do not bypass the state machine. A `READY_FOR_ARCH` story goes to the architect even if the human asks for a "quick fix".
 - Do not invent statuses or tracks outside the vocabulary above.
-- Do not modify plugin `agents/*.md` or `.claude/agents/*.md` mid-run. If a subagent definition needs changing, stop and tell the human.
+- Do not modify plugin `agents/*.md`, `.cursor/agents/*.md`, or `.claude/agents/*.md` mid-run. If a subagent definition needs changing, stop and tell the human.
